@@ -1,0 +1,8 @@
+@import "tailwindcss";         
+
+@theme {
+  --color-hive-500: #0ea5e9;   
+  --color-dark-950: #080d16;    
+  --font-sans: 'Syne', ...      
+  --animate-fade-up: ...      
+}
