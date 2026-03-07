@@ -1,8 +1,60 @@
-@import "tailwindcss";         
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @theme {
-  --color-hive-500: #0ea5e9;   
-  --color-dark-950: #080d16;    
-  --font-sans: 'Syne', ...      
-  --animate-fade-up: ...      
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+
+  /* Hive — sky blue accent */
+  --color-hive-50:  #f0f9ff;
+  --color-hive-100: #e0f2fe;
+  --color-hive-200: #bae6fd;
+  --color-hive-300: #7dd3fc;
+  --color-hive-400: #38bdf8;
+  --color-hive-500: #0ea5e9;
+  --color-hive-600: #0284c7;
+  --color-hive-700: #0369a1;
+  --color-hive-800: #075985;
+  --color-hive-900: #0c4a6e;
+
+  /* Dark — navy slate */
+  --color-dark-50:  #f8fafc;
+  --color-dark-100: #f1f5f9;
+  --color-dark-200: #e2e8f0;
+  --color-dark-300: #cbd5e1;
+  --color-dark-400: #94a3b8;
+  --color-dark-500: #64748b;
+  --color-dark-600: #475569;
+  --color-dark-700: #334155;
+  --color-dark-800: #1e293b;
+  --color-dark-850: #172033;
+  --color-dark-900: #0f172a;
+  --color-dark-950: #080d16;
+
+  /* Animations */
+  --animate-fade-up:  fadeUp 0.4s ease forwards;
+  --animate-spin:     spin 1s linear infinite;
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
 }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: #080d16;
+  color: #f1f5f9;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #080d16; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
