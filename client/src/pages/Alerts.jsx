@@ -97,7 +97,6 @@ const Alerts = () => {
   return (
     <div className="space-y-5">
 
-      {/* Toast */}
       {toast && (
         <div className={`fixed top-16 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium shadow-xl animate-fade-up ${
           toast.ok
@@ -108,7 +107,6 @@ const Alerts = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Alert Centre</h1>
@@ -124,7 +122,6 @@ const Alerts = () => {
         </div>
       </div>
 
-      {/* Summary cards */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
         {[
           { label: 'Critical',    value: summary.critical ?? 0,  color: 'text-red-400',   bg: 'bg-red-500/5 border-red-500/20',    sub: 'Out of stock' },
@@ -140,7 +137,6 @@ const Alerts = () => {
         ))}
       </div>
 
-      {/* Filters */}
       <div className="flex gap-2 flex-wrap">
         {[['false', 'Active'], ['true', 'Resolved']].map(([val, lbl]) => (
           <button
@@ -167,7 +163,7 @@ const Alerts = () => {
         </button>
       </div>
 
-      {/* Alert list */}
+    
       {loading ? <Spinner /> : alerts.length === 0 ? (
         <div className="bg-dark-900 border border-dark-800 rounded-xl">
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -201,10 +197,9 @@ const Alerts = () => {
                     )}
                   </div>
 
-                  {/* Message */}
                   <p className="text-sm font-semibold text-white mb-1.5">{alert.message}</p>
 
-                  {/* Meta */}
+
                   <div className="flex gap-4 flex-wrap text-[10px] font-mono text-dark-500">
                     <span>Material: <span className="text-dark-300">{alert.itemId?.itemName || 'N/A'}</span></span>
                     <span>Type: <span className="text-dark-300">{alert.itemId?.itemType || '—'}</span></span>
