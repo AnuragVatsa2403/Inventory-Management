@@ -83,7 +83,6 @@ const Categories = () => {
   return (
     <div className="space-y-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Categories</h1>
@@ -94,7 +93,6 @@ const Categories = () => {
         <button className={cx.btnP} onClick={openAdd}>+ Add Category</button>
       </div>
 
-      {/* Table */}
       <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
         {loading ? <Spinner /> : categories.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -135,7 +133,6 @@ const Categories = () => {
         )}
       </div>
 
-      {/* Add / Edit Modal */}
       {modal && (
         <div
           className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -172,7 +169,6 @@ const Categories = () => {
                 />
               </div>
 
-              {/* Suggestions */}
               {!editing && (
                 <div>
                   <button
