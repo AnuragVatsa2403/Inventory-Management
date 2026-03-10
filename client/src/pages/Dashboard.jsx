@@ -70,7 +70,6 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-extrabold text-white tracking-tight">Overview</h1>
         <p className="text-[10px] font-mono text-dark-500 tracking-widest uppercase mt-0.5">
@@ -78,7 +77,6 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Stat cards */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard label="Raw Materials"    value={stats?.totalMaterials ?? 0} sub="Active polymer grades"  color="hive"  icon="◈" />
         <StatCard label="Chips / FG"       value={stats?.totalChips ?? 0}     sub="Finished goods SKUs"   color="green" icon="⬡" />
@@ -86,10 +84,8 @@ const Dashboard = () => {
         <StatCard label="Pending Dispatch" value={stats?.pendingSales ?? 0}   sub="Awaiting dispatch"     color="amber" icon="◐" />
       </div>
 
-      {/* Two panel grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 
-        {/* Low stock */}
         <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-dark-800">
             <div className="flex items-center gap-2">
@@ -131,7 +127,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Recent POs */}
         <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-dark-800">
             <div className="flex items-center gap-2">

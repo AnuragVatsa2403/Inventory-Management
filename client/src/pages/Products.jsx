@@ -140,7 +140,7 @@ const Products = () => {
     'Consumable':            'gray',
   }[t] || 'gray');
 
-  // Counts for summary pills
+ 
   const rawCount      = products.filter(p => p.itemType === 'Raw Material').length;
   const chipsCount    = products.filter(p => p.itemType === 'Finished Goods').length;
   const lowCount      = products.filter(p => p.isLowStock || p.stock?.totalAvailable === 0).length;
@@ -148,7 +148,6 @@ const Products = () => {
   return (
     <div className="space-y-5">
 
-      {/* Page header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Products</h1>
@@ -159,7 +158,6 @@ const Products = () => {
         <button className={cx.btnP} onClick={openAdd}>+ Add Product</button>
       </div>
 
-      {/* Filters */}
       <div className="flex gap-2 flex-wrap items-center">
         <div className="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-lg px-3 py-2">
           <span className="text-dark-500 text-sm">⌕</span>
@@ -201,7 +199,6 @@ const Products = () => {
         </button>
       </div>
 
-      {/* Table */}
       <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
         {loading ? <Spinner /> : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -260,7 +257,6 @@ const Products = () => {
         )}
       </div>
 
-      {/* Add / Edit Modal */}
       {modal && (
         <div
           className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -278,7 +274,6 @@ const Products = () => {
             </div>
 
             <div className="space-y-3">
-              {/* Item Name */}
               <div>
                 <label className={cx.label}>Item Name *</label>
                 <input
@@ -289,7 +284,7 @@ const Products = () => {
                 />
               </div>
 
-              {/* Type + Polymer Grade */}
+             
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Item Type *</label>
@@ -319,7 +314,6 @@ const Products = () => {
                 </div>
               </div>
 
-              {/* Unit + Department */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Unit</label>
@@ -351,7 +345,6 @@ const Products = () => {
                 </div>
               </div>
 
-              {/* Batch + Threshold */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Batch / Lot No.</label>
@@ -374,7 +367,6 @@ const Products = () => {
                 </div>
               </div>
 
-              {/* Category */}
               <div>
                 <label className={cx.label}>Category</label>
                 <select
@@ -387,7 +379,6 @@ const Products = () => {
                 </select>
               </div>
 
-              {/* HSN / MFR info hint */}
               <div className="bg-hive-500/5 border border-hive-500/15 rounded-lg px-3 py-2.5 text-[10px] font-mono text-hive-400">
                 Tip: Use item names like <em>"HDPE Granules — F46003"</em> or <em>"Plastic Chips — HDPE Natural"</em> for clarity.
               </div>
