@@ -52,7 +52,6 @@ const ROLES = [
   },
 ];
 
-// Polytime departments
 const DEPARTMENTS = [
   'Management',
   'Raw Materials / Stores',
@@ -151,7 +150,6 @@ const Users = () => {
   return (
     <div className="space-y-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">User Management</h1>
@@ -164,7 +162,6 @@ const Users = () => {
         )}
       </div>
 
-      {/* Role overview cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {ROLES.map(r => (
           <div key={r.value} className="bg-dark-900 border border-dark-800 rounded-xl p-3 hover:border-dark-700 transition">
@@ -182,7 +179,6 @@ const Users = () => {
         ))}
       </div>
 
-      {/* Users table */}
       <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
         {loading ? <Spinner /> : users.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -231,7 +227,6 @@ const Users = () => {
         )}
       </div>
 
-      {/* Add / Edit Modal */}
       {modal && (
         <div
           className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
@@ -309,7 +304,6 @@ const Users = () => {
                 </select>
               </div>
 
-              {/* Role permissions preview */}
               {selectedRole && (
                 <div className="bg-dark-800 border border-dark-700 rounded-lg p-3">
                   <div className="text-[9px] font-mono text-dark-500 tracking-widest uppercase mb-2">
