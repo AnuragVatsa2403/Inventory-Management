@@ -3,7 +3,7 @@ const GoodsReceipt  = require('../models/GoodsReceipt');
 const StockLedger   = require('../models/StockLedger');
 const { checkProductAlert } = require('../services/alertService');
 
-// @route GET /api/orders
+
 const getOrders = async (req, res) => {
   try {
     const { status, supplierId, from, to } = req.query;
@@ -28,7 +28,6 @@ const getOrders = async (req, res) => {
   }
 };
 
-// @route GET /api/orders/:id
 const getOrder = async (req, res) => {
   try {
     const order = await PurchaseOrder.findById(req.params.id)
@@ -37,7 +36,6 @@ const getOrder = async (req, res) => {
 
     if (!order) return res.status(404).json({ message: 'Order not found' });
 
-    // Attach related GRNs
     const grns = await GoodsReceipt.find({ purchaseOrderId: order._id })
       .populate('itemId', 'itemName');
 
@@ -47,7 +45,6 @@ const getOrder = async (req, res) => {
   }
 };
 
-// @route POST /api/orders
 const createOrder = async (req, res) => {
   try {
     const order = await PurchaseOrder.create(req.body);
@@ -58,7 +55,6 @@ const createOrder = async (req, res) => {
   }
 };
 
-// @route PUT /api/orders/:id
 const updateOrder = async (req, res) => {
   try {
     const order = await PurchaseOrder.findById(req.params.id);
@@ -74,7 +70,6 @@ const updateOrder = async (req, res) => {
   }
 };
 
-// @route DELETE /api/orders/:id
 const deleteOrder = async (req, res) => {
   try {
     const order = await PurchaseOrder.findById(req.params.id);
@@ -89,8 +84,6 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-// @route POST /api/orders/:id/receive
-// KEY FLOW: GRN creation → StockLedger update → PO status update
 const receiveOrder = async (req, res) => {
   try {
     const { itemId, quantityReceived, batchNumber, notes } = req.body;
@@ -99,7 +92,6 @@ const receiveOrder = async (req, res) => {
     if (order.status === 'Cancelled')
       return res.status(400).json({ message: 'Cannot receive a cancelled order' });
 
-    // Find the line item in the PO
     const lineItem = order.items.find((i) => i.itemId.toString() === itemId);
     if (!lineItem) return res.status(404).json({ message: 'Item not found in this order' });
 
@@ -107,7 +99,6 @@ const receiveOrder = async (req, res) => {
     if (quantityReceived > remaining)
       return res.status(400).json({ message: `Only ${remaining} units remaining to receive` });
 
-    // 1. Create Goods Receipt Note (GRN)
     const grn = await GoodsReceipt.create({
       purchaseOrderId: order._id,
       itemId,
@@ -117,7 +108,7 @@ const receiveOrder = async (req, res) => {
       notes,
     });
 
-    // 2. Update StockLedger — upsert by itemId + batchNumber
+
     const ledgerFilter = { itemId, batchNumber: batchNumber || 'DEFAULT' };
     await StockLedger.findOneAndUpdate(
       ledgerFilter,
@@ -125,15 +116,13 @@ const receiveOrder = async (req, res) => {
       { upsert: true, new: true }
     );
 
-    // 3. Update PO line item received quantity
+
     lineItem.quantityReceived += quantityReceived;
     lineItem.partialReceipt = lineItem.quantityReceived < lineItem.quantityOrdered;
 
-    // 4. Recalculate PO status
     order.updateStatus();
     await order.save();
 
-    // 5. Re-evaluate alerts (non-blocking)
     checkProductAlert(itemId).catch(console.error);
 
     res.status(201).json({ message: 'Stock received successfully', grn, orderStatus: order.status });
