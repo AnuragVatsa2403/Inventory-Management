@@ -1,7 +1,6 @@
 const Product = require('../models/Product');
 const StockLedger = require('../models/StockLedger');
 
-// @route GET /api/products
 const getProducts = async (req, res) => {
   try {
     const { category, department, itemType, search, lowStock } = req.query;
@@ -16,7 +15,7 @@ const getProducts = async (req, res) => {
       .populate('category', 'name')
       .sort('itemName');
 
-    // Attach stock levels
+
     products = await Promise.all(
       products.map(async (p) => {
         const stock = await StockLedger.getTotalAvailable(p._id);
@@ -27,7 +26,6 @@ const getProducts = async (req, res) => {
       })
     );
 
-    // Filter low stock only
     if (lowStock === 'true') products = products.filter((p) => p.isLowStock);
 
     res.json(products);
@@ -36,7 +34,6 @@ const getProducts = async (req, res) => {
   }
 };
 
-// @route GET /api/products/:id
 const getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('category', 'name');
@@ -51,7 +48,6 @@ const getProduct = async (req, res) => {
   }
 };
 
-// @route POST /api/products
 const createProduct = async (req, res) => {
   try {
     const product = await Product.create(req.body);
@@ -62,7 +58,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-// @route PUT /api/products/:id
 const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -75,7 +70,6 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// @route DELETE /api/products/:id
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
@@ -88,7 +82,6 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// @route GET /api/products/alerts/low-stock
 const getLowStockAlerts = async (req, res) => {
   try {
     const items = await StockLedger.getLowStockItems();
