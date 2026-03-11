@@ -6,7 +6,6 @@ const {
 const { protect }   = require('../middleware/authMiddleware');
 const { authorize } = require('../middleware/rbacMiddleware');
 
-// GET /api/sales/summary  ← before /:id
 router.get('/summary', protect, authorize('view:sales'), getSalesSummary);
 
 router.route('/')
@@ -18,7 +17,6 @@ router.route('/:id')
   .put(protect, authorize('edit:sales'), updateSale)
   .delete(protect, authorize('delete:sales'), deleteSale);
 
-// POST /api/sales/:id/dispatch
 router.post('/:id/dispatch', protect, authorize('dispatch:sales'), dispatchSale);
 
 module.exports = router;

@@ -4,7 +4,6 @@ const { getUsers, createUser, updateUser, deleteUser, getMyPermissions } = requi
 const { protect }   = require('../middleware/authMiddleware');
 const { authorize } = require('../middleware/rbacMiddleware');
 
-// GET /api/users/me/permissions  ← before /:id
 router.get('/me/permissions', protect, getMyPermissions);
 
 router.route('/')

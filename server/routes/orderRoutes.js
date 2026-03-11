@@ -15,7 +15,7 @@ router.route('/:id')
   .put(protect, authorize('edit:orders'), updateOrder)
   .delete(protect, authorize('delete:orders'), deleteOrder);
 
-// POST /api/orders/:id/receive  — GRN
+
 router.post('/:id/receive', protect, authorize('receive:orders'), receiveOrder);
 
 module.exports = router;
