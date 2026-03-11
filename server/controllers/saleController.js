@@ -2,7 +2,6 @@ const SalesOrder  = require('../models/SalesOrder');
 const StockLedger = require('../models/StockLedger');
 const { checkProductAlert } = require('../services/alertService');
 
-// @route GET /api/sales
 const getSales = async (req, res) => {
   try {
     const { paymentStatus, dispatchStatus, itemId, from, to } = req.query;
@@ -27,7 +26,6 @@ const getSales = async (req, res) => {
   }
 };
 
-// @route GET /api/sales/:id
 const getSale = async (req, res) => {
   try {
     const sale = await SalesOrder.findById(req.params.id)
@@ -39,20 +37,16 @@ const getSale = async (req, res) => {
   }
 };
 
-// @route POST /api/sales
 const createSale = async (req, res) => {
   try {
     const { itemId, quantityOrdered } = req.body;
 
-    // Check available stock before creating sale
     const stock = await StockLedger.getTotalAvailable(itemId);
     if (stock.totalAvailable < quantityOrdered) {
       return res.status(400).json({
         message: `Insufficient stock. Available: ${stock.totalAvailable}`,
       });
     }
-
-    // Reserve the stock
     await StockLedger.findOneAndUpdate(
       { itemId },
       { $inc: { reservedQuantity: quantityOrdered } },
@@ -66,7 +60,6 @@ const createSale = async (req, res) => {
   }
 };
 
-// @route PUT /api/sales/:id
 const updateSale = async (req, res) => {
   try {
     const sale = await SalesOrder.findByIdAndUpdate(req.params.id, req.body, {
@@ -79,7 +72,6 @@ const updateSale = async (req, res) => {
   }
 };
 
-// @route DELETE /api/sales/:id  (cancel)
 const deleteSale = async (req, res) => {
   try {
     const sale = await SalesOrder.findById(req.params.id);
@@ -87,7 +79,6 @@ const deleteSale = async (req, res) => {
     if (sale.dispatchStatus === 'Dispatched')
       return res.status(400).json({ message: 'Cannot cancel a dispatched order' });
 
-    // Release reserved stock
     const unreleased = sale.quantityOrdered - sale.quantityDispatched;
     if (unreleased > 0) {
       await StockLedger.findOneAndUpdate(
@@ -104,8 +95,6 @@ const deleteSale = async (req, res) => {
   }
 };
 
-// @route POST /api/sales/:id/dispatch
-// KEY FLOW: Mark dispatched → deduct quantityOnHand from StockLedger
 const dispatchSale = async (req, res) => {
   try {
     const { quantityDispatched } = req.body;
@@ -118,7 +107,7 @@ const dispatchSale = async (req, res) => {
     if (quantityDispatched > remaining)
       return res.status(400).json({ message: `Only ${remaining} units left to dispatch` });
 
-    // Deduct from StockLedger (quantityOnHand & reservedQuantity)
+    
     await StockLedger.findOneAndUpdate(
       { itemId: sale.itemId },
       {
@@ -133,7 +122,7 @@ const dispatchSale = async (req, res) => {
     sale.updateDispatchStatus();
     await sale.save();
 
-    // Re-evaluate alerts after stock deduction
+
     checkProductAlert(sale.itemId).catch(console.error);
 
     res.json({ message: 'Dispatch recorded', sale });
@@ -142,7 +131,6 @@ const dispatchSale = async (req, res) => {
   }
 };
 
-// @route GET /api/sales/summary
 const getSalesSummary = async (req, res) => {
   try {
     const summary = await SalesOrder.aggregate([
