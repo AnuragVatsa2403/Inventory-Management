@@ -21,7 +21,6 @@ const PERMISSIONS = {
     'manage:alerts', 'generate:pdf',
   ],
 
-  // ── Sales / Dispatch: finished goods sales & dispatch ────
   sales: [
     'view:dashboard', 'view:products', 'view:categories',
     'view:sales', 'view:alerts',
@@ -29,7 +28,7 @@ const PERMISSIONS = {
     'manage:alerts', 'generate:pdf',
   ],
 
-  // ── Plant Manager: all ops, no user management ───────────
+
   manager: [
     'view:dashboard', 'view:products', 'view:categories',
     'view:suppliers', 'view:orders', 'view:sales', 'view:alerts',
@@ -42,7 +41,7 @@ const PERMISSIONS = {
     'manage:alerts', 'manage:reorder', 'generate:pdf',
   ],
 
-  // ── Staff / Viewer: read-only ─────────────────────────────
+
   staff: [
     'view:dashboard', 'view:products', 'view:categories',
     'view:suppliers', 'view:orders', 'view:sales', 'view:alerts',
