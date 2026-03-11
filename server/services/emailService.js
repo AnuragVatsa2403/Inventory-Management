@@ -18,9 +18,7 @@ const getTransporter = () => {
 
 const FROM = process.env.SMTP_FROM || '"InvenTrack Alerts" <alerts@inventrck.com>';
 
-/**
- * Send a low-stock alert email to configured recipients.
- */
+
 const sendLowStockEmail = async (alerts) => {
   if (!process.env.SMTP_USER) {
     console.log('[Email] SMTP not configured — skipping email');
@@ -93,9 +91,6 @@ const sendLowStockEmail = async (alerts) => {
   console.log(`[Email] Alert email sent to ${to} — ${alerts.length} alerts`);
 };
 
-/**
- * Send a reorder confirmation email when POs are auto-created.
- */
 const sendReorderEmail = async (orders) => {
   if (!process.env.SMTP_USER || !orders?.length) return;
 

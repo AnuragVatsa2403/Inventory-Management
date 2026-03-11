@@ -8,7 +8,7 @@ const startAlertScheduler = (intervalMinutes = 30) => {
   const ms = intervalMinutes * 60 * 1000;
   console.log(`  Scheduler → alert scan every ${intervalMinutes} min`);
 
-  // Run immediately on boot then on interval
+  
   runScan();
   intervalId = setInterval(runScan, ms);
 };
@@ -23,7 +23,7 @@ const runScan = async () => {
       `resolved: ${results.resolved}`
     );
 
-    // Email if new alerts found and SMTP is configured
+ 
     if (results.created > 0 && process.env.SMTP_USER) {
       const Alert = require('../models/Alert');
       const freshAlerts = await Alert.find({ isResolved: false })
@@ -33,7 +33,7 @@ const runScan = async () => {
       sendLowStockEmail(freshAlerts).catch(console.error);
     }
 
-    // Auto-reorder if enabled
+
     if (process.env.AUTO_REORDER === 'true') {
       const r = await runReorderAutomation();
       console.log(`[Scheduler] Reorder — created: ${r.created}, skipped: ${r.skipped}`);

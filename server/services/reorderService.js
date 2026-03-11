@@ -4,7 +4,6 @@ const Supplier             = require('../models/Supplier');
 const StockLedger          = require('../models/StockLedger');
 const { sendReorderEmail } = require('./emailService');
 
-// Order 3x threshold quantity when auto-reordering
 const REORDER_MULTIPLIER = 3;
 
 const runReorderAutomation = async () => {
@@ -19,14 +18,14 @@ const runReorderAutomation = async () => {
         const product = item.product;
         if (!product) { results.skipped++; continue; }
 
-        // Skip if a pending / partial PO already exists for this material
+
         const existingPO = await PurchaseOrder.findOne({
           'items.itemId': product._id,
           status: { $in: ['Pending', 'Partial'] },
         });
         if (existingPO) { results.skipped++; continue; }
 
-        // Pick supplier with shortest lead time
+     
         const supplier = await Supplier.findOne({ isActive: true }).sort('leadTimeDays');
         if (!supplier) { results.skipped++; continue; }
 

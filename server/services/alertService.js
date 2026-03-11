@@ -32,7 +32,6 @@ const runStockAlertScan = async () => {
       if (severity === 'critical') results.critical++; else results.warnings++;
 
     } else {
-      // Stock healthy — resolve open alerts
       const r = await Alert.updateMany(
         { itemId: product._id, isResolved: false },
         { isResolved: true, resolvedAt: new Date() }
@@ -45,9 +44,7 @@ const runStockAlertScan = async () => {
   return results;
 };
 
-/**
- * Targeted check for one product — called after GRN or dispatch.
- */
+
 const checkProductAlert = async (itemId) => {
   const product = await Product.findById(itemId);
   if (!product) return;
