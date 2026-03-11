@@ -68,7 +68,6 @@ const Sales = () => {
 
   useEffect(() => {
     fetchSales();
-    // Only show Finished Goods (chips) and sellable items
     api.get('/products').then(r => setProducts(r.data)).catch(() => {});
   }, [filter]);
 
@@ -110,14 +109,11 @@ const Sales = () => {
 
   const remaining = (s) => s.quantityOrdered - s.quantityDispatched;
 
-  // Summary
   const pendingT    = sales.filter(s => s.dispatchStatus === 'Pending').reduce((sum, s) => sum + remaining(s), 0);
   const unpaidCount = sales.filter(s => s.paymentStatus === 'Pending' && s.dispatchStatus !== 'Cancelled').length;
 
   return (
     <div className="space-y-5">
-
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Sales Orders</h1>
@@ -128,7 +124,6 @@ const Sales = () => {
         <button className={cx.btnP} onClick={() => setModal('create')}>+ New Sale</button>
       </div>
 
-      {/* Status filter */}
       <div className="flex gap-2 flex-wrap">
         {DISPATCH_STATUSES.map(s => (
           <button
@@ -144,8 +139,6 @@ const Sales = () => {
           </button>
         ))}
       </div>
-
-      {/* Table */}
       <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
         {loading ? <Spinner /> : sales.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -226,7 +219,7 @@ const Sales = () => {
         )}
       </div>
 
-      {/* ── Create Sale Modal ── */}
+
       {modal === 'create' && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setModal(null)}>
           <div className="bg-dark-900 border border-dark-800 rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl" onClick={e => e.stopPropagation()}>
@@ -239,7 +232,6 @@ const Sales = () => {
             </div>
 
             <div className="space-y-3">
-              {/* Product */}
               <div>
                 <label className={cx.label}>Material / Chips *</label>
                 <select className={cx.select} value={form.itemId} onChange={e => handleProductSelect(e.target.value)}>
@@ -297,7 +289,7 @@ const Sales = () => {
                 </div>
               )}
 
-              {/* Customer details */}
+        
               <div className="border-t border-dark-800 pt-4">
                 <p className={cx.label} style={{ marginBottom: '10px' }}>Customer Details</p>
                 <div className="space-y-2">
@@ -320,7 +312,7 @@ const Sales = () => {
         </div>
       )}
 
-      {/* ── Dispatch Modal ── */}
+    
       {dispatchModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setDispatchModal(null)}>
           <div className="bg-dark-900 border border-dark-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
