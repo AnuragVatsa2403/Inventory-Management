@@ -2,7 +2,6 @@ const SalesOrder   = require('../models/SalesOrder');
 const GoodsReceipt = require('../models/GoodsReceipt');
 const { generateInvoice, generateGRN } = require('../services/pdfService');
 
-// GET /api/pdf/invoice/:saleId
 const downloadInvoice = async (req, res) => {
   try {
     const sale = await SalesOrder.findById(req.params.saleId)
@@ -16,7 +15,6 @@ const downloadInvoice = async (req, res) => {
   }
 };
 
-// GET /api/pdf/grn/:grnId
 const downloadGRN = async (req, res) => {
   try {
     const grn = await GoodsReceipt.findById(req.params.grnId)
