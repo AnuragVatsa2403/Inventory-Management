@@ -27,7 +27,6 @@ const alertSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Prevent duplicate unresolved alerts for same item+type
 alertSchema.index({ itemId: 1, type: 1, isResolved: 1 });
 
 module.exports = mongoose.model('Alert', alertSchema);
