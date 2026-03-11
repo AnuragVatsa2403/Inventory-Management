@@ -8,11 +8,10 @@ async function createAdmin() {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('✓ Connected');
 
-    // Delete existing admin
     await User.deleteMany({ email: 'admin@polytime.in' });
     console.log('✓ Cleared old admin');
 
-    // Create using User model — pre-save hook will hash password automatically
+   
     const user = new User({
       name:       'Admin',
       email:      'admin@polytime.in',
@@ -24,7 +23,7 @@ async function createAdmin() {
     await user.save();
     console.log('✓ Admin created with hashed password');
 
-    // Verify it works
+    
     const saved = await User.findOne({ email: 'admin@polytime.in' }).select('+password');
     const bcrypt = require('bcryptjs');
     const match = await bcrypt.compare('Admin1234', saved.password);

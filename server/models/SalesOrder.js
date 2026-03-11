@@ -45,7 +45,6 @@ const salesOrderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-update dispatch status
 salesOrderSchema.methods.updateDispatchStatus = function () {
   if (this.quantityDispatched >= this.quantityOrdered) {
     this.dispatchStatus = 'Dispatched';
