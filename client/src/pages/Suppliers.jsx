@@ -80,7 +80,6 @@ const Suppliers = () => {
   return (
     <div className="space-y-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Suppliers</h1>
@@ -167,7 +166,6 @@ const Suppliers = () => {
             </div>
 
             <div className="space-y-3">
-              {/* Name + Type */}
               <div>
                 <label className={cx.label}>Supplier Name *</label>
                 <input
