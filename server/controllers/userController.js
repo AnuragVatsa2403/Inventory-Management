@@ -2,7 +2,6 @@ const User = require('../models/User');
 const { getPermissions } = require('../middleware/rbacMiddleware');
 const jwt = require('jsonwebtoken');
 
-// @route GET /api/users
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({ isActive: true }).sort('name');
@@ -10,7 +9,6 @@ const getUsers = async (req, res) => {
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
-// @route POST /api/users
 const createUser = async (req, res) => {
   try {
     const exists = await User.findOne({ email: req.body.email });
@@ -20,7 +18,6 @@ const createUser = async (req, res) => {
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
-// @route PUT /api/users/:id
 const updateUser = async (req, res) => {
   try {
     const { password, ...updates } = req.body;
@@ -30,7 +27,6 @@ const updateUser = async (req, res) => {
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
-// @route DELETE /api/users/:id
 const deleteUser = async (req, res) => {
   try {
     if (req.params.id === req.user.id) return res.status(400).json({ message: 'Cannot deactivate yourself' });
@@ -39,7 +35,6 @@ const deleteUser = async (req, res) => {
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
-// @route GET /api/users/permissions — return current user permissions
 const getMyPermissions = (req, res) => {
   const perms = getPermissions(req.user.role);
   res.json({ role: req.user.role, permissions: perms });
