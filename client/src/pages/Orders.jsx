@@ -71,7 +71,7 @@ const Orders = () => {
     api.get('/products').then(r => setProducts(r.data)).catch(() => {});
   }, [filter]);
 
-  // Item line helpers
+
   const addItem    = () => setForm({ ...form, items: [...form.items, { itemId: '', quantityOrdered: 1, unitPrice: 0 }] });
   const updateItem = (i, k, v) => {
     const items = [...form.items];
@@ -135,7 +135,6 @@ const Orders = () => {
         </div>
       </div>
 
-      {/* Auto-reorder message */}
       {msg && (
         <div className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm border ${
           msg.ok
@@ -146,7 +145,7 @@ const Orders = () => {
         </div>
       )}
 
-      {/* Status filter pills */}
+
       <div className="flex gap-2 flex-wrap">
         {STATUSES.map(s => (
           <button
@@ -163,7 +162,7 @@ const Orders = () => {
         ))}
       </div>
 
-      {/* Table */}
+    
       <div className="bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
         {loading ? <Spinner /> : orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-dark-500">
