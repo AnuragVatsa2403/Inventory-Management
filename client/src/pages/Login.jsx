@@ -24,14 +24,14 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Ambient glows */}
+      
       <div className="fixed top-24 left-24 w-80 h-80 rounded-full pointer-events-none"
            style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.07) 0%, transparent 70%)', filter: 'blur(60px)' }} />
       <div className="fixed bottom-16 right-16 w-96 h-96 rounded-full pointer-events-none"
            style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.05) 0%, transparent 70%)', filter: 'blur(80px)' }} />
 
       <div className="w-full max-w-sm relative z-10">
-        {/* Logo */}
+      
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
                style={{ background: 'linear-gradient(135deg, #38bdf8, #0284c7)', boxShadow: '0 8px 32px rgba(14,165,233,0.25)' }}>
@@ -43,7 +43,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-dark-900 border border-dark-800 rounded-2xl p-7 shadow-2xl">
           <h2 className="text-sm font-semibold text-dark-200 mb-5">Sign in to your account</h2>
 

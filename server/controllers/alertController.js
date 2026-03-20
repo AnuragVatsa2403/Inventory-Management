@@ -13,7 +13,7 @@ const getAlerts = async (req, res) => {
 
     const alerts = await Alert.find(filter)
       .populate('itemId', 'itemName itemType unit department lowStockThreshold')
-      .sort({ severity: 1, createdAt: -1 }) // critical first
+      .sort({ severity: 1, createdAt: -1 }) 
       .limit(Number(limit));
 
     const unreadCount = await Alert.countDocuments({ isRead: false, isResolved: false });
