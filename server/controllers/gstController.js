@@ -1,7 +1,7 @@
 const SalesOrder = require('../models/SalesOrder');
 const Product    = require('../models/Product');
 
-// ── Indian states list ────────────────────────────────────────
+
 const INDIAN_STATES = [
   'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh',
   'Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka',
@@ -12,7 +12,7 @@ const INDIAN_STATES = [
   'Daman and Diu','Delhi','Jammu and Kashmir','Ladakh','Lakshadweep','Puducherry',
 ];
 
-// ── HSN codes for plastics ────────────────────────────────────
+
 const PLASTIC_HSN = [
   { code: '3901', desc: 'Polymers of ethylene (HDPE, LDPE, LLDPE)',   rate: 18 },
   { code: '3902', desc: 'Polymers of propylene (PP Homopolymer/Copo)', rate: 18 },
@@ -27,7 +27,6 @@ const PLASTIC_HSN = [
   { code: '2811', desc: 'Calcium carbonate, fillers',                  rate: 5  },
 ];
 
-// ── Calculate GST for a sales order ───────────────────────────
 const calculateGST = (taxableValue, gstRate, sellerState, buyerState) => {
   const isIntrastate = sellerState?.toLowerCase() === buyerState?.toLowerCase();
   const totalTax     = +(taxableValue * gstRate / 100).toFixed(2);
@@ -61,18 +60,17 @@ const calculateGST = (taxableValue, gstRate, sellerState, buyerState) => {
   };
 };
 
-// ── GET /api/gst/hsn-codes ────────────────────────────────────
+
 const getHSNCodes = (req, res) => {
   res.json(PLASTIC_HSN);
 };
 
-// ── GET /api/gst/states ───────────────────────────────────────
+
 const getStates = (req, res) => {
   res.json(INDIAN_STATES);
 };
 
-// ── POST /api/gst/calculate ───────────────────────────────────
-// Body: { quantity, unitPrice, gstRate, sellerState, buyerState }
+
 const calculateGSTPreview = (req, res) => {
   try {
     const { quantity, unitPrice, gstRate, sellerState, buyerState } = req.body;
@@ -178,7 +176,7 @@ const monthlySummary = async (req, res) => {
       });
     }
 
-    // Round totals
+   
     ['totalTaxable','totalCGST','totalSGST','totalIGST','totalTax','totalValue']
       .forEach(k => { summary[k] = +summary[k].toFixed(2); });
 
