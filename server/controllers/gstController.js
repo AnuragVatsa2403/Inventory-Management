@@ -104,7 +104,7 @@ const applyGSTToOrder = async (req, res) => {
     sale.gst       = gst;
     sale.buyerState = bState;
 
-    // E-way bill — auto-flag if value > ₹50,000
+    
     if (taxableValue > 50000 && ewayBillNumber) {
       sale.ewayBill = {
         number:      ewayBillNumber,
