@@ -120,8 +120,7 @@ const applyGSTToOrder = async (req, res) => {
   }
 };
 
-// ── GET /api/gst/monthly-summary ─────────────────────────────
-// Monthly GST summary for all sales — for tax filing
+
 const monthlySummary = async (req, res) => {
   try {
     const { month, year } = req.query;
