@@ -1,58 +1,60 @@
 const mongoose = require('mongoose');
 
+// Sales Orders — Polytime sells finished plastic chips to converters/manufacturers
 const salesOrderSchema = new mongoose.Schema(
   {
-    itemId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-      required: [true, 'Product is required'],
+    itemId:            { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+    quantityOrdered:   { type: Number, required: true, min: 0 },    // Tonnes
+    quantityDispatched:{ type: Number, default: 0, min: 0 },
+    saleDate:          { type: Date, default: Date.now },
+    customer: {
+      name:    { type: String, trim: true },
+      email:   { type: String, trim: true, lowercase: true },
+      phone:   { type: String, trim: true },
+      gstin:   { type: String, trim: true },
+      address: { type: String, trim: true },
     },
-    quantityOrdered: {
-      type: Number,
-      required: [true, 'Quantity ordered is required'],
-      min: 1,
-    },
-    quantityDispatched: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-    saleDate: {
-      type: Date,
-      default: Date.now,
-    },
+    unitPrice:         { type: Number, default: 0 },    // ₹ per Tonne
     paymentStatus: {
       type: String,
-      enum: ['Paid', 'Pending'],
+      enum: ['Paid', 'Pending', 'Partial'],
       default: 'Pending',
-    },
-    creditNoteIssued: {
-      type: Boolean,   // Y/N in ER
-      default: false,
-    },
-    customer: {
-      name:  { type: String, trim: true },
-      email: { type: String, trim: true },
-      phone: { type: String, trim: true },
     },
     dispatchStatus: {
       type: String,
       enum: ['Pending', 'Partial', 'Dispatched', 'Cancelled'],
       default: 'Pending',
     },
-    notes: { type: String },
+    vehicleNumber:   { type: String, trim: true },
+    invoiceNumber:   { type: String, trim: true },
+    creditNoteIssued:{ type: Boolean, default: false },
+    notes:           { type: String, trim: true },
+    // ── GST fields ──────────────────────────────────────────
+    gst: {
+      type:        { type: String, enum: ['CGST+SGST', 'IGST', 'Exempt'], default: 'CGST+SGST' },
+      rate:        { type: Number, default: 18 },   // total GST %
+      taxableValue:{ type: Number, default: 0 },    // unitPrice × qty
+      cgst:        { type: Number, default: 0 },    // 9% of taxable (intrastate)
+      sgst:        { type: Number, default: 0 },    // 9% of taxable (intrastate)
+      igst:        { type: Number, default: 0 },    // 18% of taxable (interstate)
+      totalTax:    { type: Number, default: 0 },
+      totalValue:  { type: Number, default: 0 },    // taxableValue + totalTax
+    },
+    ewayBill: {
+      number:      { type: String, trim: true },    // e-way bill no. for dispatch > ₹50,000
+      generatedAt: { type: Date },
+      validUntil:  { type: Date },
+    },
+    sellerState:   { type: String, default: 'Haryana' },  // Polytime's state
+    buyerState:    { type: String, trim: true },           // customer's state
   },
   { timestamps: true }
 );
 
 salesOrderSchema.methods.updateDispatchStatus = function () {
-  if (this.quantityDispatched >= this.quantityOrdered) {
-    this.dispatchStatus = 'Dispatched';
-  } else if (this.quantityDispatched > 0) {
-    this.dispatchStatus = 'Partial';
-  } else {
-    this.dispatchStatus = 'Pending';
-  }
+  if (this.quantityDispatched >= this.quantityOrdered) this.dispatchStatus = 'Dispatched';
+  else if (this.quantityDispatched > 0)                this.dispatchStatus = 'Partial';
+  else                                                 this.dispatchStatus = 'Pending';
 };
 
 module.exports = mongoose.model('SalesOrder', salesOrderSchema);
