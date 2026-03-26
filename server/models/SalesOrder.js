@@ -31,16 +31,16 @@ const salesOrderSchema = new mongoose.Schema(
     // ── GST fields ──────────────────────────────────────────
     gst: {
       type:        { type: String, enum: ['CGST+SGST', 'IGST', 'Exempt'], default: 'CGST+SGST' },
-      rate:        { type: Number, default: 18 },   // total GST %
-      taxableValue:{ type: Number, default: 0 },    // unitPrice × qty
-      cgst:        { type: Number, default: 0 },    // 9% of taxable (intrastate)
-      sgst:        { type: Number, default: 0 },    // 9% of taxable (intrastate)
-      igst:        { type: Number, default: 0 },    // 18% of taxable (interstate)
+      rate:        { type: Number, default: 18 },  
+      taxableValue:{ type: Number, default: 0 },    
+      cgst:        { type: Number, default: 0 },    
+      sgst:        { type: Number, default: 0 },    
+      igst:        { type: Number, default: 0 },    
       totalTax:    { type: Number, default: 0 },
-      totalValue:  { type: Number, default: 0 },    // taxableValue + totalTax
+      totalValue:  { type: Number, default: 0 },    
     },
     ewayBill: {
-      number:      { type: String, trim: true },    // e-way bill no. for dispatch > ₹50,000
+      number:      { type: String, trim: true },    
       generatedAt: { type: Date },
       validUntil:  { type: Date },
     },
