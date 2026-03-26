@@ -1,5 +1,6 @@
 const PDFDocument = require('pdfkit');
 
+// ── Polytime brand colors ──────────────────────────────────────
 const C = {
   bg:      '#080d16',
   surface: '#0f172a',
@@ -14,22 +15,25 @@ const C = {
   amber:   '#f59e0b',
 };
 
+// ── Helpers ────────────────────────────────────────────────────
 const drawHeader = (doc, title, subtitle, refNo) => {
-
+  // Background
   doc.rect(0, 0, doc.page.width, 85).fill(C.surface);
+  // Accent left bar
   doc.rect(0, 0, 4, 85).fill(C.accent);
 
+  // SH logo box
   doc.roundedRect(28, 18, 42, 42, 6).fill(C.accent);
   doc.fillColor('#ffffff').font('Helvetica-Bold').fontSize(15)
      .text('SH', 28, 31, { width: 42, align: 'center' });
 
-
+  // Title + subtitle
   doc.fillColor(C.text).font('Helvetica-Bold').fontSize(18)
      .text(title, 82, 20);
   doc.fillColor(C.muted).font('Helvetica').fontSize(8)
      .text('POLYTIME INDUSTRIES  ·  ' + subtitle.toUpperCase(), 82, 42, { characterSpacing: 1.2 });
 
-
+  // Ref number right
   doc.fillColor(C.muted).font('Helvetica').fontSize(9)
      .text(refNo, doc.page.width - 190, 25, { width: 160, align: 'right' });
   doc.fillColor(C.muted).font('Helvetica').fontSize(8)
@@ -96,29 +100,31 @@ const drawFooter = (doc) => {
      );
 };
 
+// ── Sales Invoice ──────────────────────────────────────────────
 const generateInvoice = (res, sale) => {
   const doc = new PDFDocument({ size: 'A4', margin: 30, bufferPages: true });
   doc.pipe(res);
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="invoice-${String(sale._id).slice(-8).toUpperCase()}.pdf"`);
 
-
+  // Full page background
   doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg);
 
   const refNo = `INV-${String(sale._id).slice(-8).toUpperCase()}`;
   drawHeader(doc, 'Sales Invoice', 'Inventory Management System', refNo);
 
-  
+  // ── Invoice details ─────────────────────────────────────────
   drawSectionLabel(doc, 'Invoice Details');
   const col2x  = doc.page.width / 2 + 10;
   const startY = doc.y;
 
-
+  // Left column
   drawInfoRow(doc, 'Invoice No.',  refNo,                                        40, startY);
   drawInfoRow(doc, 'Sale Date',    new Date(sale.saleDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }), 40);
   drawInfoRow(doc, 'Payment',      sale.paymentStatus,                           40);
   drawInfoRow(doc, 'Dispatch',     sale.dispatchStatus,                          40);
 
+  // Right column — customer
   if (sale.customer?.name) {
     drawInfoRow(doc, 'Customer',   sale.customer.name,              col2x, startY);
     drawInfoRow(doc, 'GSTIN',      sale.customer.gstin  || '—',     col2x);
@@ -130,6 +136,7 @@ const generateInvoice = (res, sale) => {
 
   doc.y = startY + 80;
 
+  // ── Material / item table ───────────────────────────────────
   drawSectionLabel(doc, 'Material Details');
   const itemCols = [
     { label: 'Material / Grade', width: 190, bold: true },
@@ -151,7 +158,7 @@ const generateInvoice = (res, sale) => {
     sale.quantityDispatched,
   ], false);
 
-  
+  // ── Summary ─────────────────────────────────────────────────
   doc.moveDown(1.2);
   drawSectionLabel(doc, 'Summary');
   const remaining = sale.quantityOrdered - sale.quantityDispatched;
@@ -160,13 +167,50 @@ const generateInvoice = (res, sale) => {
   drawInfoRow(doc, 'Remaining',         `${remaining} ${item?.unit || 'T'}`);
   if (sale.unitPrice) {
     drawInfoRow(doc, 'Unit Price',      `₹${sale.unitPrice.toLocaleString('en-IN')} / T`);
-    drawInfoRow(doc, 'Invoice Value',   `₹${(sale.quantityOrdered * sale.unitPrice).toLocaleString('en-IN')}`);
+    const taxableValue = sale.quantityOrdered * sale.unitPrice;
+    drawInfoRow(doc, 'Taxable Value',   `₹${taxableValue.toLocaleString('en-IN')}`);
+  }
+
+  // ── GST breakdown ───────────────────────────────────────────
+  if (sale.gst?.totalTax > 0) {
+    doc.moveDown(0.5);
+    drawSectionLabel(doc, 'GST Details');
+    const g = sale.gst;
+    drawInfoRow(doc, 'GST Type',        g.type || '—');
+    drawInfoRow(doc, 'GST Rate',        `${g.rate}%`);
+    drawInfoRow(doc, 'Taxable Value',   `₹${(g.taxableValue||0).toLocaleString('en-IN')}`);
+    if (g.type === 'CGST+SGST') {
+      drawInfoRow(doc, `CGST (${g.rate/2}%)`, `₹${(g.cgst||0).toLocaleString('en-IN')}`);
+      drawInfoRow(doc, `SGST (${g.rate/2}%)`, `₹${(g.sgst||0).toLocaleString('en-IN')}`);
+    } else {
+      drawInfoRow(doc, `IGST (${g.rate}%)`,   `₹${(g.igst||0).toLocaleString('en-IN')}`);
+    }
+    drawInfoRow(doc, 'Total Tax',       `₹${(g.totalTax||0).toLocaleString('en-IN')}`);
+    // Grand total highlight
+    const gtY = doc.y + 4;
+    doc.rect(30, gtY, doc.page.width - 60, 28).fill(C.card);
+    doc.fillColor(C.muted).font('Helvetica').fontSize(9).text('GRAND TOTAL (incl. GST)', 40, gtY + 8, { width: 200 });
+    doc.fillColor(C.accent).font('Helvetica-Bold').fontSize(12)
+       .text(`₹${(g.totalValue||0).toLocaleString('en-IN')}`, 40, gtY + 7, { width: doc.page.width - 80, align: 'right' });
+    doc.y = gtY + 38;
+  }
+
+  // ── E-way bill ──────────────────────────────────────────────
+  if (sale.ewayBill?.number) {
+    doc.moveDown(0.5);
+    drawSectionLabel(doc, 'E-Way Bill');
+    drawInfoRow(doc, 'E-Way Bill No.',  sale.ewayBill.number);
+    if (sale.ewayBill.generatedAt)
+      drawInfoRow(doc, 'Generated On',  new Date(sale.ewayBill.generatedAt).toLocaleDateString('en-IN'));
+    if (sale.ewayBill.validUntil)
+      drawInfoRow(doc, 'Valid Until',   new Date(sale.ewayBill.validUntil).toLocaleDateString('en-IN'));
   }
 
   drawFooter(doc);
   doc.end();
 };
 
+// ── GRN (Goods Receipt Note) ───────────────────────────────────
 const generateGRN = (res, grn) => {
   const doc = new PDFDocument({ size: 'A4', margin: 30, bufferPages: true });
   doc.pipe(res);
@@ -178,6 +222,7 @@ const generateGRN = (res, grn) => {
   const refNo = `GRN-${String(grn._id).slice(-8).toUpperCase()}`;
   drawHeader(doc, 'Goods Receipt Note', 'Raw Material Inward · Polytime Industries', refNo);
 
+  // ── Receipt details ─────────────────────────────────────────
   drawSectionLabel(doc, 'Receipt Details');
   const col2x  = doc.page.width / 2 + 10;
   const startY = doc.y;
@@ -187,13 +232,14 @@ const generateGRN = (res, grn) => {
     ? `PO-${String(grn.purchaseOrderId._id || grn.purchaseOrderId).slice(-8).toUpperCase()}`
     : '—';
 
-
+  // Left
   drawInfoRow(doc, 'GRN Number',    refNo,                                              40, startY);
   drawInfoRow(doc, 'Receipt Date',  new Date(grn.receiptDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }), 40);
   drawInfoRow(doc, 'Batch / LOT',   grn.batchNumber || '—',                            40);
   drawInfoRow(doc, 'Vehicle No.',   grn.vehicleNumber || '—',                           40);
   drawInfoRow(doc, 'Quality',       grn.qualityStatus || 'Pending QC',                 40);
 
+  // Right
   drawInfoRow(doc, 'PO Reference',  poRef,                                             col2x, startY);
   drawInfoRow(doc, 'Supplier',      supplier?.supplierName || '—',                     col2x);
   if (supplier?.contactInfo?.gstin)
@@ -201,7 +247,7 @@ const generateGRN = (res, grn) => {
 
   doc.y = startY + 92;
 
-
+  // ── Material table ──────────────────────────────────────────
   drawSectionLabel(doc, 'Received Material');
   const grnCols = [
     { label: 'Material / Grade', width: 200, bold: true },
@@ -220,7 +266,7 @@ const generateGRN = (res, grn) => {
     grn.quantityReceived,
   ], false);
 
-  
+  // ── Signature / verification boxes ─────────────────────────
   doc.moveDown(2);
   drawSectionLabel(doc, 'Verification & Sign-off');
   const sigY = doc.y + 8;
