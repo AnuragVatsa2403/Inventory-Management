@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-// Sales Orders — Polytime sells finished plastic chips to converters/manufacturers
 const salesOrderSchema = new mongoose.Schema(
   {
     itemId:            { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantityOrdered:   { type: Number, required: true, min: 0 },    // Tonnes
+    quantityOrdered:   { type: Number, required: true, min: 0 },   
     quantityDispatched:{ type: Number, default: 0, min: 0 },
     saleDate:          { type: Date, default: Date.now },
     customer: {
@@ -14,7 +13,7 @@ const salesOrderSchema = new mongoose.Schema(
       gstin:   { type: String, trim: true },
       address: { type: String, trim: true },
     },
-    unitPrice:         { type: Number, default: 0 },    // ₹ per Tonne
+    unitPrice:         { type: Number, default: 0 },    
     paymentStatus: {
       type: String,
       enum: ['Paid', 'Pending', 'Partial'],
@@ -45,8 +44,8 @@ const salesOrderSchema = new mongoose.Schema(
       generatedAt: { type: Date },
       validUntil:  { type: Date },
     },
-    sellerState:   { type: String, default: 'Haryana' },  // Polytime's state
-    buyerState:    { type: String, trim: true },           // customer's state
+    sellerState:   { type: String, default: 'Haryana' },
+    buyerState:    { type: String, trim: true },         
   },
   { timestamps: true }
 );
