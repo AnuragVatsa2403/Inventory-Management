@@ -28,7 +28,7 @@ const salesOrderSchema = new mongoose.Schema(
     invoiceNumber:   { type: String, trim: true },
     creditNoteIssued:{ type: Boolean, default: false },
     notes:           { type: String, trim: true },
-    // ── GST fields ──────────────────────────────────────────
+  
     gst: {
       type:        { type: String, enum: ['CGST+SGST', 'IGST', 'Exempt'], default: 'CGST+SGST' },
       rate:        { type: Number, default: 18 },  
