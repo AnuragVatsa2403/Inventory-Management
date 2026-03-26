@@ -1,4 +1,4 @@
-const express   = require('express');
+onst express   = require('express');
 const cors      = require('cors');
 const morgan    = require('morgan');
 const dotenv    = require('dotenv');
@@ -39,6 +39,7 @@ app.use('/api/alerts',     require('./routes/alertRoutes'));
 app.use('/api/pdf',        require('./routes/pdfRoutes'));
 app.use('/api/reorder',    require('./routes/reorderRoutes'));
 app.use('/api/users',      require('./routes/userRoutes'));
+app.use('/api/gst',        require('./routes/gstRoutes'));
 
 app.get('/', (req, res) => res.json({
   message: 'StockHive API running',
