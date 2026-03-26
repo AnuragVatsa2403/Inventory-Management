@@ -36,7 +36,7 @@ const Spinner = () => (
   </div>
 );
 
-// ── Wastage Gauge ──────────────────────────────────────────────
+
 const WastageGauge = ({ pct }) => {
   const color = pct <= 5 ? '#22c55e' : pct <= 10 ? '#f59e0b' : '#ef4444';
   const label = pct <= 5 ? 'Excellent' : pct <= 10 ? 'Acceptable' : 'High';
@@ -54,7 +54,7 @@ const WastageGauge = ({ pct }) => {
   );
 };
 
-// ── Stats bar ──────────────────────────────────────────────────
+
 const StatsBar = ({ stats }) => {
   if (!stats) return null;
   return (
@@ -74,7 +74,6 @@ const StatsBar = ({ stats }) => {
   );
 };
 
-// ══════════════════════════════════════════════════════════════
 const Production = () => {
   const [entries,   setEntries]   = useState([]);
   const [products,  setProducts]  = useState([]);
@@ -84,7 +83,7 @@ const Production = () => {
   const [detail,    setDetail]    = useState(null);  // entry detail panel
   const [saving,    setSaving]    = useState(false);
 
-  // Form state
+  
   const blankForm = () => ({
     batchCode:     '',
     productionDate:'',
@@ -117,7 +116,7 @@ const Production = () => {
 
   useEffect(() => { fetchAll(); }, []);
 
-  // Auto-generate batch code
+ 
   const autoBatchCode = () => {
     const d    = new Date();
     const yr   = d.getFullYear();
@@ -126,21 +125,20 @@ const Production = () => {
     setForm(f => ({ ...f, batchCode: `PROD-${yr}${mo}-${rnd}` }));
   };
 
-  // Raw material lines
   const addRM = () => setForm(f => ({ ...f, rawMaterials: [...f.rawMaterials, { itemId:'', batchNumber:'', quantityUsed:'' }] }));
   const removeRM = (i) => setForm(f => ({ ...f, rawMaterials: f.rawMaterials.filter((_,idx)=>idx!==i) }));
   const updateRM = (i, key, val) => setForm(f => ({
     ...f, rawMaterials: f.rawMaterials.map((r,idx) => idx===i ? { ...r, [key]: val } : r),
   }));
 
-  // Finished goods lines
+ 
   const addFG = () => setForm(f => ({ ...f, finishedGoods: [...f.finishedGoods, { itemId:'', batchNumber:'', quantityProduced:'' }] }));
   const removeFG = (i) => setForm(f => ({ ...f, finishedGoods: f.finishedGoods.filter((_,idx)=>idx!==i) }));
   const updateFG = (i, key, val) => setForm(f => ({
     ...f, finishedGoods: f.finishedGoods.map((g,idx) => idx===i ? { ...g, [key]: val } : g),
   }));
 
-  // Live wastage preview
+  
   const totalRaw = form.rawMaterials.reduce((s,r) => s + (parseFloat(r.quantityUsed)||0), 0);
   const totalFG  = form.finishedGoods.reduce((s,g) => s + (parseFloat(g.quantityProduced)||0), 0);
   const wastage  = Math.max(0, totalRaw - totalFG);
@@ -188,7 +186,6 @@ const Production = () => {
   return (
     <div className="space-y-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Production</h1>
@@ -201,13 +198,12 @@ const Production = () => {
         </button>
       </div>
 
-      {/* Stats */}
+    
       <StatsBar stats={stats}/>
 
-      {/* Table + Detail panel */}
       <div className="flex gap-4 items-start">
 
-        {/* Table */}
+        
         <div className="flex-1 bg-dark-900 border border-dark-800 rounded-xl overflow-hidden">
           {loading ? <Spinner/> : entries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-dark-500">
@@ -271,9 +267,8 @@ const Production = () => {
           )}
         </div>
 
-        {/* Detail panel */}
         {detail && (
-          <div className="w-80 flex-shrink-0 space-y-3">
+          <div className="w-80 flex-[0_0_auto] space-y-3">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-white font-mono">{detail.batchCode}</p>
               <button className="text-dark-500 hover:text-white text-lg" onClick={() => setDetail(null)}>✕</button>
@@ -285,10 +280,10 @@ const Production = () => {
                 <span className="text-[10px] font-mono text-dark-500">{detail.processType} · {detail.shift}</span>
               </div>
 
-              {/* Wastage gauge */}
+             
               <WastageGauge pct={detail.wastage?.percentage ?? 0}/>
 
-              {/* Summary */}
+              
               <div className="grid grid-cols-2 gap-2">
                 {[
                   ['Raw In',    `${detail.rawMaterials.reduce((s,r)=>s+r.quantityUsed,0).toFixed(2)} MT`],
@@ -303,7 +298,7 @@ const Production = () => {
                 ))}
               </div>
 
-              {/* Raw materials */}
+             
               <div>
                 <p className="text-[9px] font-mono text-dark-500 uppercase tracking-widest mb-2">Raw Materials Used</p>
                 {detail.rawMaterials.map((r,i) => (
@@ -314,7 +309,7 @@ const Production = () => {
                 ))}
               </div>
 
-              {/* Finished goods */}
+             
               <div>
                 <p className="text-[9px] font-mono text-dark-500 uppercase tracking-widest mb-2">Finished Goods Produced</p>
                 {detail.finishedGoods.map((g,i) => (
@@ -343,7 +338,7 @@ const Production = () => {
         )}
       </div>
 
-      {/* Add Production Modal */}
+  
       {modal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={() => setModal(false)}>
@@ -357,7 +352,7 @@ const Production = () => {
 
             <div className="space-y-4">
 
-              {/* Batch code + date */}
+              
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Batch Code *</label>
@@ -374,7 +369,7 @@ const Production = () => {
                 </div>
               </div>
 
-              {/* Process + shift */}
+          
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className={cx.label}>Process Type</label>
@@ -397,7 +392,7 @@ const Production = () => {
                 </div>
               </div>
 
-              {/* Operator + supervisor */}
+             
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Operator Name</label>
@@ -411,7 +406,7 @@ const Production = () => {
                 </div>
               </div>
 
-              {/* Raw Materials */}
+        
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className={cx.label}>Raw Materials Consumed *</label>
@@ -446,7 +441,6 @@ const Production = () => {
                 ))}
               </div>
 
-              {/* Finished Goods */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className={cx.label}>Finished Goods Produced *</label>
@@ -481,7 +475,7 @@ const Production = () => {
                 ))}
               </div>
 
-              {/* Live wastage preview */}
+              
               {totalRaw > 0 && (
                 <div className="bg-dark-800/60 border border-dark-700 rounded-lg p-3 space-y-2">
                   <p className="text-[9px] font-mono text-dark-500 uppercase tracking-widest">Live Wastage Preview</p>
@@ -494,7 +488,7 @@ const Production = () => {
                 </div>
               )}
 
-              {/* Wastage reason + notes */}
+            
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={cx.label}>Wastage Reason</label>
@@ -508,7 +502,7 @@ const Production = () => {
                 </div>
               </div>
 
-              {/* Info tip */}
+             
               <div className="bg-hive-500/5 border border-hive-500/15 rounded-lg px-3 py-2.5 text-[10px] font-mono text-hive-400">
                 💡 Save as Draft first. Click <b>Complete</b> on the entry to deduct raw material stock and credit finished goods.
               </div>

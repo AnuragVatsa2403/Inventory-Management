@@ -142,7 +142,6 @@ const PerformancePanel = ({ supplierId }) => {
   );
 };
 
-// ══════════════════════════════════════════════════════════════
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -260,7 +259,7 @@ const Suppliers = () => {
 
         {/* Performance panel — appears on row click */}
         {selectedId && (
-          <div className="w-80 flex-shrink-0 space-y-3">
+          <div className="w-80 flex-[0_0_auto] space-y-3">
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold text-white truncate">{selectedSupplier?.supplierName}</p>
               <button className="text-dark-500 hover:text-white text-lg leading-none ml-2"
