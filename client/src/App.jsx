@@ -11,6 +11,7 @@ import Orders     from './pages/Orders';
 import Sales      from './pages/Sales';
 import Alerts     from './pages/Alerts';
 import Users      from './pages/Users';
+import Production from './pages/Production';
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="sales" element={<Sales />} />
           <Route path="alerts" element={<Alerts />} />
           <Route path="users" element={<Users />} />
+          <Route path="production" element={<Production />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
