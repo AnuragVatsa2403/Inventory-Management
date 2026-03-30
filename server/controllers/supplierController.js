@@ -2,7 +2,6 @@ const Supplier      = require('../models/Supplier');
 const PurchaseOrder = require('../models/PurchaseOrder');
 const GoodsReceipt  = require('../models/GoodsReceipt');
 
-// ── Performance calculation helper ──────────────────────────────
 const calcPerformance = async (supplierId) => {
   const orders = await PurchaseOrder.find({
     supplierId,
