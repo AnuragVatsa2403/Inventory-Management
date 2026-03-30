@@ -2,7 +2,7 @@
 
 const PERMISSIONS = {
   admin: [
-    'view:dashboard', 'view:products', 'view:categories', 'view:suppliers',
+    'view:dashboard', 'view:products', 'view:categories', 'view:suppliers', 'view:production', 'view:reports',
     'view:orders', 'view:sales', 'view:alerts', 'view:users',
     'create:products', 'create:categories', 'create:suppliers',
     'create:orders', 'create:sales',
