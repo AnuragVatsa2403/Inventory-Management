@@ -15,7 +15,7 @@ const PERMISSIONS = {
   ],
 
   orders: [
-    'view:dashboard', 'view:products', 'view:categories',
+    'view:dashboard', 'view:products', 'view:categories', 'view: production',
     'view:suppliers', 'view:orders', 'view:alerts',
     'create:orders', 'edit:orders', 'receive:orders',
     'manage:alerts', 'generate:pdf',
@@ -30,7 +30,7 @@ const PERMISSIONS = {
 
 
   manager: [
-    'view:dashboard', 'view:products', 'view:categories',
+    'view:dashboard', 'view:products', 'view:categories', 'view:production',
     'view:suppliers', 'view:orders', 'view:sales', 'view:alerts',
     'create:products', 'create:categories', 'create:suppliers',
     'create:orders', 'create:sales',
