@@ -31,7 +31,6 @@ const productSchema = new mongoose.Schema(
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     lowStockThreshold: { type: Number, default: 10 },
     isActive: { type: Boolean, default: true },
-    // Polytime-specific: grade/specification info
     grade: { type: String, trim: true },       
     meltFlowIndex: { type: Number }, 
     density: { type: Number },                  
