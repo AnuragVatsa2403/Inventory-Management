@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-// Item types for Polytime Industries (plastic manufacturer)
-// Raw Materials: HDPE Granules, LDPE Granules, PP Homopolymer, PVC Resin, etc.
-// Finished Goods: Plastic Chips (HDPE, LDPE, PP), Masterbatch, etc.
+
 
 const productSchema = new mongoose.Schema(
   {
@@ -34,11 +32,11 @@ const productSchema = new mongoose.Schema(
     lowStockThreshold: { type: Number, default: 10 },
     isActive: { type: Boolean, default: true },
     // Polytime-specific: grade/specification info
-    grade: { type: String, trim: true },        // e.g. HD-50MA180, LD-2426H
-    meltFlowIndex: { type: Number },            // MFI for granules
-    density: { type: Number },                  // g/cm³
-    hsnCode: { type: String, trim: true },      // GST HSN code e.g. 3901, 3902, 3904
-    gstRate: { type: Number, default: 18 },     // GST % — 5, 12, 18 or 28
+    grade: { type: String, trim: true },       
+    meltFlowIndex: { type: Number }, 
+    density: { type: Number },                  
+    hsnCode: { type: String, trim: true },      
+    gstRate: { type: Number, default: 18 },     
   },
   { timestamps: true }
 );
