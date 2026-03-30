@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-// Production Entry — records raw material consumption and finished goods output
-// Example: 10 MT HDPE + 0.5 MT additive → 9.2 MT plastic pipes + 1.3 MT wastage
+
 const productionEntrySchema = new mongoose.Schema(
   {
     batchCode: {
@@ -9,7 +8,6 @@ const productionEntrySchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      // e.g. PROD-HDPE-202503-001
     },
     productionDate: { type: Date, default: Date.now },
     shift: {
@@ -23,8 +21,7 @@ const productionEntrySchema = new mongoose.Schema(
       default: 'Draft',
     },
 
-    // ── Raw Materials Consumed ────────────────────────────────
-    // Each line: which material, from which batch, how much consumed
+    
     rawMaterials: [
       {
         itemId:       { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -34,7 +31,7 @@ const productionEntrySchema = new mongoose.Schema(
       },
     ],
 
-    // ── Finished Goods Produced ───────────────────────────────
+   
     finishedGoods: [
       {
         itemId:           { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -44,16 +41,14 @@ const productionEntrySchema = new mongoose.Schema(
       },
     ],
 
-    // ── Wastage / Loss ────────────────────────────────────────
-    // Auto-calculated: total raw material in - total finished goods out
+   
     wastage: {
-      quantity:    { type: Number, default: 0 },   // Tonnes lost
-      percentage:  { type: Number, default: 0 },   // % of total raw material
-      reason:      { type: String, trim: true },    // e.g. "Startup scrap", "Quality rejection"
+      quantity:    { type: Number, default: 0 },   
+      percentage:  { type: Number, default: 0 },   
+      reason:      { type: String, trim: true },    
     },
 
-    // ── Machine / Process Info ────────────────────────────────
-    machineId:     { type: String, trim: true },    // e.g. "EXT-01", "INJ-02"
+    machineId:     { type: String, trim: true },  
     processType: {
       type: String,
       enum: ['Extrusion', 'Injection Moulding', 'Blow Moulding', 'Calendering', 'Other'],
@@ -63,13 +58,11 @@ const productionEntrySchema = new mongoose.Schema(
     supervisorName:{ type: String, trim: true },
     notes:         { type: String, trim: true },
 
-    // ── Created by ────────────────────────────────────────────
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );
 
-// Auto-calculate wastage before saving
 productionEntrySchema.pre('save', function (next) {
   const totalIn  = this.rawMaterials.reduce((s, m) => s + (m.quantityUsed || 0), 0);
   const totalOut = this.finishedGoods.reduce((s, g) => s + (g.quantityProduced || 0), 0);
