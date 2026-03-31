@@ -23,7 +23,7 @@ const PERMISSIONS = {
 
   sales: [
     'view:dashboard', 'view:products', 'view:categories',
-    'view:sales', 'view:alerts',
+    'view:sales', 'view:alerts', 'view: reports',
     'create:sales', 'edit:sales', 'dispatch:sales',
     'manage:alerts', 'generate:pdf',
   ],
