@@ -5,7 +5,7 @@ const PERMISSIONS = {
     'view:dashboard', 'view:products', 'view:categories', 'view:suppliers', 'view:production', 'view:reports',
     'view:orders', 'view:sales', 'view:alerts', 'view:users',
     'create:products', 'create:categories', 'create:suppliers',
-    'create:orders', 'create:sales',
+    'create:orders', 'create:sales', 'create:production',
     'edit:products', 'edit:categories', 'edit:suppliers',
     'edit:orders', 'edit:sales', 'edit:users',
     'delete:products', 'delete:categories', 'delete:suppliers',
