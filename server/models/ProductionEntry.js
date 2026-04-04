@@ -63,13 +63,12 @@ const productionEntrySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-productionEntrySchema.pre('save', function (next) {
+productionEntrySchema.pre('save', function () {
   const totalIn  = this.rawMaterials.reduce((s, m) => s + (m.quantityUsed || 0), 0);
   const totalOut = this.finishedGoods.reduce((s, g) => s + (g.quantityProduced || 0), 0);
   const lost     = Math.max(0, totalIn - totalOut);
   this.wastage.quantity   = +lost.toFixed(3);
   this.wastage.percentage = totalIn > 0 ? +(lost / totalIn * 100).toFixed(2) : 0;
-  next();
 });
 
 module.exports = mongoose.model('ProductionEntry', productionEntrySchema);
