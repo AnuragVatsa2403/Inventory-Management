@@ -6,7 +6,7 @@ const PERMISSIONS = {
     'view:orders', 'view:sales', 'view:alerts', 'view:users',
     'create:products', 'create:categories', 'create:suppliers',
     'create:orders', 'create:sales', 'create:production',
-    'edit:products', 'edit:categories', 'edit:suppliers',
+    'edit:products', 'edit:categories', 'edit:suppliers', 'edit:production',
     'edit:orders', 'edit:sales', 'edit:users',
     'delete:products', 'delete:categories', 'delete:suppliers',
     'delete:orders', 'delete:sales',
@@ -45,6 +45,7 @@ const PERMISSIONS = {
   staff: [
     'view:dashboard', 'view:products', 'view:categories',
     'view:suppliers', 'view:orders', 'view:sales', 'view:alerts', 'view:production',
+    'edit:production'
   ],
 };
 
