@@ -11,7 +11,8 @@ const { startAlertScheduler } = require('./services/scheduler');
 
 const app = express();
 
-// Allow any localhost port (dev) or CLIENT_URL (prod)
+
+
 app.use(cors({
   origin: '*',
   credentials: false,
