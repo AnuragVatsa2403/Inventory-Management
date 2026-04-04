@@ -13,16 +13,8 @@ const app = express();
 
 // Allow any localhost port (dev) or CLIENT_URL (prod)
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-      callback(null, true);
-    } else if (origin === process.env.CLIENT_URL) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
+  origin: '*',
+  credentials: false,
 }));
 
 app.use(express.json({ limit: '10mb' }));
