@@ -13,7 +13,7 @@ router.get('/states',          protect, getStates);
 
 router.post('/calculate',      protect, calculateGSTPreview);
 
-// Apply GST to an existing order
+
 router.post('/apply/:saleId',  protect, authorize('edit:sales'), applyGSTToOrder);
 
 // Monthly GST summary report
