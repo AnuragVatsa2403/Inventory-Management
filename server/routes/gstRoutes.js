@@ -16,7 +16,7 @@ router.post('/calculate',      protect, calculateGSTPreview);
 
 router.post('/apply/:saleId',  protect, authorize('edit:sales'), applyGSTToOrder);
 
-// Monthly GST summary report
+
 router.get('/monthly-summary', protect, authorize('view:reports'), monthlySummary);
 
 module.exports = router;
