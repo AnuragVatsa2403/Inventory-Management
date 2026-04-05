@@ -6,7 +6,7 @@ const {
 const { protect }   = require('../middleware/authMiddleware');
 const { authorize } = require('../middleware/rbacMiddleware');
 
-// Reference data — no special permission needed
+
 router.get('/hsn-codes',       protect, getHSNCodes);
 router.get('/states',          protect, getStates);
 
