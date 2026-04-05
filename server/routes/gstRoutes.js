@@ -10,7 +10,7 @@ const { authorize } = require('../middleware/rbacMiddleware');
 router.get('/hsn-codes',       protect, getHSNCodes);
 router.get('/states',          protect, getStates);
 
-// Calculate preview (used in SalesOrder form before saving)
+
 router.post('/calculate',      protect, calculateGSTPreview);
 
 // Apply GST to an existing order
