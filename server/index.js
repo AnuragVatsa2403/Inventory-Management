@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors({
   origin: '*',
-  credentials: false,s
+  credentials: false,
 }));
 
 app.use(express.json({ limit: '10mb' }));
