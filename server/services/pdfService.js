@@ -1,6 +1,6 @@
 const PDFDocument = require('pdfkit');
 
-// ── Polytime brand colors ──────────────────────────────────────
+
 const C = {
   bg:      '#080d16',
   surface: '#0f172a',
@@ -15,25 +15,23 @@ const C = {
   amber:   '#f59e0b',
 };
 
-// ── Helpers ────────────────────────────────────────────────────
+
 const drawHeader = (doc, title, subtitle, refNo) => {
-  // Background
   doc.rect(0, 0, doc.page.width, 85).fill(C.surface);
-  // Accent left bar
   doc.rect(0, 0, 4, 85).fill(C.accent);
 
-  // SH logo box
+
   doc.roundedRect(28, 18, 42, 42, 6).fill(C.accent);
   doc.fillColor('#ffffff').font('Helvetica-Bold').fontSize(15)
      .text('SH', 28, 31, { width: 42, align: 'center' });
 
-  // Title + subtitle
+
   doc.fillColor(C.text).font('Helvetica-Bold').fontSize(18)
      .text(title, 82, 20);
   doc.fillColor(C.muted).font('Helvetica').fontSize(8)
      .text('POLYTIME INDUSTRIES  ·  ' + subtitle.toUpperCase(), 82, 42, { characterSpacing: 1.2 });
 
-  // Ref number right
+
   doc.fillColor(C.muted).font('Helvetica').fontSize(9)
      .text(refNo, doc.page.width - 190, 25, { width: 160, align: 'right' });
   doc.fillColor(C.muted).font('Helvetica').fontSize(8)
