@@ -136,7 +136,6 @@ const generateInvoice = (res, sale) => {
 
   doc.y = startY + 80;
 
-  // ── Material / item table ───────────────────────────────────
   drawSectionLabel(doc, 'Material Details');
   const itemCols = [
     { label: 'Material / Grade', width: 190, bold: true },
@@ -158,7 +157,7 @@ const generateInvoice = (res, sale) => {
     sale.quantityDispatched,
   ], false);
 
-  // ── Summary ─────────────────────────────────────────────────
+
   doc.moveDown(1.2);
   drawSectionLabel(doc, 'Summary');
   const remaining = sale.quantityOrdered - sale.quantityDispatched;
@@ -195,7 +194,7 @@ const generateInvoice = (res, sale) => {
     doc.y = gtY + 38;
   }
 
-  // ── E-way bill ──────────────────────────────────────────────
+ 
   if (sale.ewayBill?.number) {
     doc.moveDown(0.5);
     drawSectionLabel(doc, 'E-Way Bill');
@@ -210,7 +209,7 @@ const generateInvoice = (res, sale) => {
   doc.end();
 };
 
-// ── GRN (Goods Receipt Note) ───────────────────────────────────
+
 const generateGRN = (res, grn) => {
   const doc = new PDFDocument({ size: 'A4', margin: 30, bufferPages: true });
   doc.pipe(res);
@@ -222,7 +221,7 @@ const generateGRN = (res, grn) => {
   const refNo = `GRN-${String(grn._id).slice(-8).toUpperCase()}`;
   drawHeader(doc, 'Goods Receipt Note', 'Raw Material Inward · Polytime Industries', refNo);
 
-  // ── Receipt details ─────────────────────────────────────────
+  
   drawSectionLabel(doc, 'Receipt Details');
   const col2x  = doc.page.width / 2 + 10;
   const startY = doc.y;
