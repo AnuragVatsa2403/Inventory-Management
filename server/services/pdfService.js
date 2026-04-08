@@ -100,14 +100,14 @@ const drawFooter = (doc) => {
      );
 };
 
-// ── Sales Invoice ──────────────────────────────────────────────
+
 const generateInvoice = (res, sale) => {
   const doc = new PDFDocument({ size: 'A4', margin: 30, bufferPages: true });
   doc.pipe(res);
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="invoice-${String(sale._id).slice(-8).toUpperCase()}.pdf"`);
 
-  // Full page background
+  
   doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg);
 
   const refNo = `INV-${String(sale._id).slice(-8).toUpperCase()}`;
