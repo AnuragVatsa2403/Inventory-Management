@@ -113,18 +113,18 @@ const generateInvoice = (res, sale) => {
   const refNo = `INV-${String(sale._id).slice(-8).toUpperCase()}`;
   drawHeader(doc, 'Sales Invoice', 'Inventory Management System', refNo);
 
-  // ── Invoice details ─────────────────────────────────────────
+  
   drawSectionLabel(doc, 'Invoice Details');
   const col2x  = doc.page.width / 2 + 10;
   const startY = doc.y;
 
-  // Left column
+
   drawInfoRow(doc, 'Invoice No.',  refNo,                                        40, startY);
   drawInfoRow(doc, 'Sale Date',    new Date(sale.saleDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }), 40);
   drawInfoRow(doc, 'Payment',      sale.paymentStatus,                           40);
   drawInfoRow(doc, 'Dispatch',     sale.dispatchStatus,                          40);
 
-  // Right column — customer
+
   if (sale.customer?.name) {
     drawInfoRow(doc, 'Customer',   sale.customer.name,              col2x, startY);
     drawInfoRow(doc, 'GSTIN',      sale.customer.gstin  || '—',     col2x);
