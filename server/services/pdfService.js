@@ -101,10 +101,9 @@ const drawFooter = (doc) => {
 
 const generateInvoice = (res, sale) => {
   const doc = new PDFDocument({ size: 'A4', margin: 30, bufferPages: true });
-  doc.pipe(res);
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="invoice-${String(sale._id).slice(-8).toUpperCase()}.pdf"`);
-
+  doc.pipe(res);
   
   doc.rect(0, 0, doc.page.width, doc.page.height).fill(C.bg);
 
@@ -168,7 +167,7 @@ const generateInvoice = (res, sale) => {
     drawInfoRow(doc, 'Taxable Value',   `₹${taxableValue.toLocaleString('en-IN')}`);
   }
 
-  // ── GST breakdown ───────────────────────────────────────────
+  
   if (sale.gst?.totalTax > 0) {
     doc.moveDown(0.5);
     drawSectionLabel(doc, 'GST Details');
@@ -183,7 +182,6 @@ const generateInvoice = (res, sale) => {
       drawInfoRow(doc, `IGST (${g.rate}%)`,   `₹${(g.igst||0).toLocaleString('en-IN')}`);
     }
     drawInfoRow(doc, 'Total Tax',       `₹${(g.totalTax||0).toLocaleString('en-IN')}`);
-    // Grand total highlight
     const gtY = doc.y + 4;
     doc.rect(30, gtY, doc.page.width - 60, 28).fill(C.card);
     doc.fillColor(C.muted).font('Helvetica').fontSize(9).text('GRAND TOTAL (incl. GST)', 40, gtY + 8, { width: 200 });

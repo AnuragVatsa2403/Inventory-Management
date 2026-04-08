@@ -95,6 +95,30 @@ const Sales = () => {
     } catch (err) { alert(err.response?.data?.message || 'Dispatch failed'); }
   };
 
+  const handleInvoice = async (id) => {
+  try {
+    const token = localStorage.getItem("stockhive_token");
+
+    const response = await api.get(`/pdf/invoice/${id}`, {
+      responseType: "blob",
+      headers: {
+        Authorization: `Bearer ${token}`, // 🔥 FORCE
+      },
+    });
+
+    const url = window.URL.createObjectURL(response.data);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `invoice-${id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (err) {
+    alert(err.response?.data?.message || "Error downloading invoice");
+  }
+};
+
   const handleCancel = async (id) => {
     if (!window.confirm('Cancel this sale order? Reserved stock will be released back to inventory.')) return;
     try { await api.delete(`/sales/${id}`); fetchSales(); }
@@ -200,15 +224,9 @@ const Sales = () => {
                         {s.dispatchStatus !== 'Dispatched' && s.dispatchStatus !== 'Cancelled' && (
                           <button className={cx.btnR} onClick={() => handleCancel(s._id)}>Cancel</button>
                         )}
-                        <a
-                          className={cx.btnG}
-                          href={`${API_BASE}/pdf/invoice/${s._id}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          download
-                        >
+                        <button className={cx.btnG} onClick={() => handleInvoice(s._id)}>
                           ↓ Invoice
-                        </a>
+                        </button>
                       </div>
                     </td>
                   </tr>

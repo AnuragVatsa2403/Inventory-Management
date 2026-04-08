@@ -119,7 +119,6 @@ const Orders = () => {
   return (
     <div className="space-y-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">Purchase Orders</h1>
