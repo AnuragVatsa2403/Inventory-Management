@@ -41,6 +41,8 @@ const createSale = async (req, res) => {
   try {
     const { itemId, quantityOrdered } = req.body;
 
+    const {calculateGST}= require('./gstController');
+
     const stock = await StockLedger.getTotalAvailable(itemId);
     if (stock.totalAvailable < quantityOrdered) {
       return res.status(400).json({
@@ -50,7 +52,7 @@ const createSale = async (req, res) => {
     await StockLedger.findOneAndUpdate(
       { itemId },
       { $inc: { reservedQuantity: quantityOrdered } },
-      { sort: { availableQuantity: -1 } } // use batch with most stock first
+      { sort: { availableQuantity: -1 } } 
     );
 
     const sale = await SalesOrder.create(req.body);
