@@ -232,14 +232,13 @@ const generateGRN = (res, grn) => {
     ? `PO-${String(grn.purchaseOrderId._id || grn.purchaseOrderId).slice(-8).toUpperCase()}`
     : '—';
 
-  // Left
+
   drawInfoRow(doc, 'GRN Number',    refNo,                                              40, startY);
   drawInfoRow(doc, 'Receipt Date',  new Date(grn.receiptDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }), 40);
   drawInfoRow(doc, 'Batch / LOT',   grn.batchNumber || '—',                            40);
   drawInfoRow(doc, 'Vehicle No.',   grn.vehicleNumber || '—',                           40);
   drawInfoRow(doc, 'Quality',       grn.qualityStatus || 'Pending QC',                 40);
 
-  // Right
   drawInfoRow(doc, 'PO Reference',  poRef,                                             col2x, startY);
   drawInfoRow(doc, 'Supplier',      supplier?.supplierName || '—',                     col2x);
   if (supplier?.contactInfo?.gstin)
@@ -247,7 +246,7 @@ const generateGRN = (res, grn) => {
 
   doc.y = startY + 92;
 
-  // ── Material table ──────────────────────────────────────────
+
   drawSectionLabel(doc, 'Received Material');
   const grnCols = [
     { label: 'Material / Grade', width: 200, bold: true },
@@ -266,7 +265,7 @@ const generateGRN = (res, grn) => {
     grn.quantityReceived,
   ], false);
 
-  // ── Signature / verification boxes ─────────────────────────
+  
   doc.moveDown(2);
   drawSectionLabel(doc, 'Verification & Sign-off');
   const sigY = doc.y + 8;
